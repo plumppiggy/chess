@@ -11,7 +11,6 @@ class Pawn : public Piece {
         ~Pawn();
         void setLocation(Square *location);
         bool canMoveTo(Square &dest);
-
         void display();
 
         bool hasMoved();

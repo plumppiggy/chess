@@ -14,7 +14,7 @@ bool Piece::move(Player &byPlayer, Square & dest) {
     Square *origin = square;
 
     if (isWhite == byPlayer.isPlayerWhite()) {
-        if (canMove(dest)) {
+        if (canMoveTo(dest)) {
             if (dest.occupied()) {
                 capture = dest.occupiedBy();
 
@@ -30,6 +30,7 @@ bool Piece::move(Player &byPlayer, Square & dest) {
                     capture->setLocation(nullptr);
                 }
                 square->setPiece(nullptr);
+                square = &dest;
                 square->setPiece(this);
 
                 if (byPlayer.inCheck()) {
@@ -46,13 +47,11 @@ bool Piece::move(Player &byPlayer, Square & dest) {
                     if (capture) {
                         byPlayer.capture(capture);
                     }
-                }
-
-                
+                }  
             }
         }
     }
-
+    
     return valid;
 }
 
@@ -71,5 +70,7 @@ bool Piece::isOnSquare() {
 Square * Piece::location() {
     return square;
 }
+
+
 
 

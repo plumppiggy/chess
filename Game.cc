@@ -6,16 +6,8 @@
 #include "Rook.h"
 #include "Pawn.h"
 #include "Square.h"
-#include "Player.h"
-
 
 using namespace std;
-
-Player* Game::player1 = nullptr;
-Player* Game::player2;
-Player* Game::nextPlayer;
-std::set<Piece*> Game::whiteP;
-std::set<Piece*> Game::blackP;
 
 
 Game::Game() {}
@@ -155,6 +147,7 @@ void Game::initialize() {
     player2 = new Player("Black", false ,blackP, *aKing);
 
     nextPlayer = player2;
+
 }
 
 Player * Game::getPlayer() {
@@ -171,3 +164,9 @@ Player * Game::opponent(Player & player) {
     }
     return opponent;
 }
+
+Player* Game::player1 = nullptr;
+Player* Game::player2;
+Player* Game::nextPlayer;
+std::set<Piece*> Game::whiteP;
+std::set<Piece*> Game::blackP;

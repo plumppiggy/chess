@@ -18,12 +18,12 @@ bool Player::makeMove() {
     if (inCheck()) {
         cout << name << " is in check" << endl;
     }
-    cout << name << " enter a move (ex b3 b2)";
+    cout << name << " enter a move (ex b2 b3)";
     cin >> from >> to;
     while (from.length() != 2 || to.length() != 2 || from.at(0) < 'a' || from.at(0) > 'h' || to.at(0) < 'a'
-            || to.at(0) > 'h' || from.at(1) < 1 || from.at(1) > 8 || to.at(1) > 8 || to.at(1) < 0 ||
-            !(ChessBoard::getBoard()->squareAt(tolower(from.at(0)) - 'a', from.at(1))->occupied())) {
-                cerr << "invalid move" << endl;
+            || to.at(0) > 'h' || from.at(1) < '1'|| from.at(1) > '8' || to.at(1) > '8' || to.at(1) < '1' ||
+            !(ChessBoard::getBoard()->squareAt(from.at(0) - 'a', from.at(1) - '1')->occupied())) {
+                cerr << "Invalid move" << endl;
                 cin.clear();
                 cin.ignore();
                 cout << name << " enter a move (ex b3 b2)";
@@ -31,9 +31,16 @@ bool Player::makeMove() {
     }
 
     fromX = tolower(from.at(0) - 'a');
-    fromY = from.at(1);
+    fromY = from.at(1) - '1';
     toX = tolower(to.at(0) - 'a');
-    toY = to.at(1);
+    toY = to.at(1) - '1';
+
+    cout << fromX << fromY << toX << toY << endl;
+
+    Piece *h = ChessBoard::getBoard()->squareAt(fromX, fromY)->occupiedBy();
+    h->display();
+    Square *h2 = (ChessBoard::getBoard()->squareAt(toX, toY));
+    cout << h2->occupied();
 
     return ChessBoard::getBoard()->squareAt(fromX, fromY)->occupiedBy()->move
                         (*this, *(ChessBoard::getBoard()->squareAt(toX, toY)));
@@ -43,7 +50,7 @@ bool Player::makeMove() {
 bool Player::inCheck() {
 
     for (auto it: Game::opponent(*this)->pieces) {
-        if (it->location() && it->canMove(*(king.location()))) {
+        if (it->location() && it->canMoveTo(*(king.location()))) {
             return true;
         }
     }

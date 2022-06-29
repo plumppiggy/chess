@@ -17,13 +17,13 @@ class Piece {
     
         bool isPieceWhite() const;
     
-        virtual bool canMove(Square& location);
+        virtual bool canMoveTo(Square& location) = 0;
     
         bool isOnSquare();
     
         Square* location();
 
-        void display();
+        virtual void display() = 0;
 
     protected:
         bool isWhite;

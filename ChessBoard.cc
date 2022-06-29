@@ -14,11 +14,9 @@ ChessBoard::ChessBoard() {
 ChessBoard::~ChessBoard() {
     for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
-            delete[] squares[i][j];
+            delete [] squares[i][j];
         }
-        delete [] squares[i];
     }
-    delete [] squares;
 }
 
 ChessBoard * ChessBoard::getBoard() {
@@ -79,7 +77,7 @@ bool ChessBoard::clearDiagPath(Square & origin, Square &dest) {
 }
 
 void ChessBoard::display(ostream& out) {
-    out << endl << " a b c d e f g h" << endl;
+    // out << endl << " a b c d e f g h" << endl;
     out << "==================" << endl;
     for (int i = DIMENSION - 1; i >= 0; i--) {
         out << i + 1;
@@ -87,6 +85,7 @@ void ChessBoard::display(ostream& out) {
             out << "|";
             if (squares[x][i]->occupied()) {
                 squares[x][i]->occupiedBy()->display();
+                out << "x:" << x << "i" << i;
             } else {
                 out << " ";
             }
@@ -95,3 +94,5 @@ void ChessBoard::display(ostream& out) {
     }
     out << " a b c d e f g h" << endl;
 }
+
+ChessBoard * ChessBoard::board = nullptr;

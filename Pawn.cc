@@ -31,3 +31,11 @@ bool Pawn::canMoveTo(Square & dest) {
 bool Pawn::hasMoved() {
     return moved;
 }
+
+void Pawn::display() {
+    if (isWhite) {
+        cout << "P";
+    } else {
+        cout << "p";
+    }
+}
