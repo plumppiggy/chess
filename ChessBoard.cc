@@ -85,7 +85,7 @@ void ChessBoard::display(ostream& out) {
             out << "|";
             if (squares[x][i]->occupied()) {
                 squares[x][i]->occupiedBy()->display();
-                out << "x:" << x << "i" << i;
+                // out << "x:" << x << "i" << i;
             } else {
                 out << " ";
             }

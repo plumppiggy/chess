@@ -165,7 +165,7 @@ Player * Game::opponent(Player & player) {
     return opponent;
 }
 
-Player* Game::player1 = nullptr;
+Player* Game::player1;
 Player* Game::player2;
 Player* Game::nextPlayer;
 std::set<Piece*> Game::whiteP;

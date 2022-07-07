@@ -35,12 +35,7 @@ bool Player::makeMove() {
     toX = tolower(to.at(0) - 'a');
     toY = to.at(1) - '1';
 
-    cout << fromX << fromY << toX << toY << endl;
-
-    Piece *h = ChessBoard::getBoard()->squareAt(fromX, fromY)->occupiedBy();
-    h->display();
-    Square *h2 = (ChessBoard::getBoard()->squareAt(toX, toY));
-    cout << h2->occupied();
+    //cout << fromX << fromY << toX << toY << endl;
 
     return ChessBoard::getBoard()->squareAt(fromX, fromY)->occupiedBy()->move
                         (*this, *(ChessBoard::getBoard()->squareAt(toX, toY)));
@@ -48,14 +43,15 @@ bool Player::makeMove() {
 }
 
 bool Player::inCheck() {
-
-    for (auto it: Game::opponent(*this)->pieces) {
-        if (it->location() && it->canMoveTo(*(king.location()))) {
-            return true;
-        }
-    }
-
     return false;
+
+    // for (auto it: Game::opponent(*this)->pieces) {
+    //     if (it->location() && it->canMoveTo(*(king.location()))) {
+    //         return true;
+    //     }
+    // }
+
+    // return false;
 }
 
 void Player::capture(Piece * p) {
