@@ -79,6 +79,7 @@ bool ChessBoard::clearDiagPath(Square & origin, Square &dest) {
 void ChessBoard::display(ostream& out) {
     // out << endl << " a b c d e f g h" << endl;
     out << "==================" << endl;
+    out << "  a b c d e f g h " << endl;
     for (int i = DIMENSION - 1; i >= 0; i--) {
         out << i + 1;
         for (int x = 0; x < DIMENSION; x++) {
@@ -92,7 +93,7 @@ void ChessBoard::display(ostream& out) {
         }
         out << endl;
     }
-    out << " a b c d e f g h" << endl;
+    out << "  a b c d e f g h " << endl;
 }
 
 ChessBoard * ChessBoard::board = nullptr;
