@@ -16,9 +16,9 @@ bool Player::makeMove() {
     string to = "";
     int fromX, fromY, toX, toY;
     if (inCheck()) {
-        cout << name << " is in check" << endl;
+        cout << name << " is in check." << endl;
     }
-    cout << name << " enter a move (ex b2 b3)";
+    cout << name << " please enter a move (ex b2 b3) ";
     cin >> from >> to;
     while (from.length() != 2 || to.length() != 2 || from.at(0) < 'a' || from.at(0) > 'h' || to.at(0) < 'a'
             || to.at(0) > 'h' || from.at(1) < '1'|| from.at(1) > '8' || to.at(1) > '8' || to.at(1) < '1' ||

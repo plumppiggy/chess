@@ -12,7 +12,7 @@ int main () {
     while (true) {
         cur = Game::getPlayer();
         while (!cur->makeMove()) {
-            cerr << "Invalid move, enter a new move" << endl;
+            cerr << "Invalid move, please try again" << endl;
         }
         ChessBoard::getBoard()->display(cout);
     }
