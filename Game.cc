@@ -146,13 +146,17 @@ void Game::initialize() {
 
     player2 = new Player("Black", false ,blackP, *aKing);
 
-    nextPlayer = player2;
 
 }
 
-Player * Game::getPlayer() {
-    nextPlayer = opponent(*nextPlayer);
-    return nextPlayer;
+Player* Game::getPlayer(int player_id) {
+    if (player_id == 1) {
+        return player1;
+    } else if (player_id == 2) {
+        return player2;
+    } else {
+        return nullptr;
+    }
 }
 
 Player * Game::opponent(Player & player) {
@@ -164,9 +168,3 @@ Player * Game::opponent(Player & player) {
     }
     return opponent;
 }
-
-Player* Game::player1;
-Player* Game::player2;
-Player* Game::nextPlayer;
-std::set<Piece*> Game::whiteP;
-std::set<Piece*> Game::blackP;

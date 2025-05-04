@@ -3,24 +3,26 @@
 
 #include "Piece.h"
 #include "King.h"
+#include "InputReader.h"
+#include "ChessPlayer.h"
 #include <string>
 #include <set>
 
-class Player {
+class Player : public ChessPlayer {
     public:
         Player(std::string name, bool isWhite, std::set<Piece*>& pieces, King & king);
         ~Player();
 
-        bool makeMove();
-        bool inCheck();
+        bool makeMove(Move move) override;
+        bool inCheck() override;
 
-        void capture(Piece *piece);
+        void capture(Piece *piece) override;
 
-        std::string getName();
-        bool isPlayerWhite();
+        std::string getName() override;
+        bool isPlayerWhite() override;
 
-        std::set<Piece*> * myPieces();
-        King * myKing();
+        std::set<Piece*> * myPieces() override;
+        King * myKing() override;
 
 
     private:

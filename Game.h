@@ -10,19 +10,18 @@
 class Game {
     public:
         ~Game();
-        static void initialize();
+        void initialize();
 
-        static Player* getPlayer();
+        Player* getPlayer(int player_id);
 
-        static Player* opponent(Player & player);
+        Player* opponent(Player & player);
 
     private:
         Game();
-        static Player* player1;
-        static Player* player2;
-        static Player* nextPlayer;
-        static std::set<Piece*> whiteP;
-        static std::set<Piece*> blackP;
+        Player* player1;
+        Player* player2;
+        std::set<Piece*> whiteP;
+        std::set<Piece*> blackP;
 
 
 };
