@@ -73,6 +73,28 @@ bool ChessBoard::clearHorPath(Square & origin, Square & dest) {
 }
 
 bool ChessBoard::clearDiagPath(Square & origin, Square &dest) {
+
+    int deltaX = abs(origin.getX() - dest.getX());
+    int deltaY = abs(origin.getY() - dest.getY());
+
+    if (deltaX != deltaY) {
+        return false; // Not a diagonal move
+    }
+
+    int stepX = (dest.getX() > origin.getX()) ? 1 : -1;
+    int stepY = (dest.getY() > origin.getY()) ? 1 : -1;
+
+    int x = origin.getX() + stepX;
+    int y = origin.getY() + stepY;
+
+    while (x != dest.getX() && y != dest.getY()) {
+        if (squareAt(x, y)->occupied()) {
+            return false; // Path is blocked
+        }
+        x += stepX;
+        y += stepY;
+    }
+
     return true;
 }
 

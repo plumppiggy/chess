@@ -9,15 +9,17 @@
 
 class Game {
     public:
+        Game();
         ~Game();
         void initialize();
 
         Player* getPlayer(int player_id);
 
         Player* opponent(Player & player);
+        bool MakeMove(ChessPlayer& player, Move move);
+
 
     private:
-        Game();
         Player* player1;
         Player* player2;
         std::set<Piece*> whiteP;

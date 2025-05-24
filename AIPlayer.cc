@@ -3,12 +3,15 @@
 
 AIPlayer::AIPlayer(std::string name, bool isWhite, std::set<Piece*>& pieces, King& king)
     : name(name), isWhite(isWhite), pieces(pieces), king(&king) {}
-
-bool AIPlayer::makeMove() {
+AIPlayer::AIPlayer() 
+    : name("AI Player"), isWhite(true), king(nullptr) {
+    // Default constructor initializes with default values
+}
+bool AIPlayer::makeMove(Move move) {
     return true;
 }
 
-bool AIPlayer::inCheck() {
+bool AIPlayer::inCheck(Game &game) {
     std::cout << name << " is checking if it's in check..." << std::endl;
     return false;
 }

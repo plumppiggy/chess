@@ -2,18 +2,20 @@
 
 #include <memory> 
 #include "game.h"
+#include "ChessPlayer.h"
 #include "AIPlayer.h"
 #include "ChessBoard.h"
 #include "InputReader.h"
 #include "Player.h"
-#include "ChessPlayer.h"
 
 
 int main () {
     ChessPlayer* player1;
     ChessPlayer* player2;
 
-    Game::initialize();
+    Game game;
+    game.initialize();
+
 
     std::cout << "Choose a game mode: " << std::endl;
     std::cout << "1. Player vs Player" << std::endl;
@@ -21,10 +23,10 @@ int main () {
     int choice;
     std::cin >> choice;
     if (choice == 1) {
-        player1 = Game::getPlayer(1);
-        player2 = Game::getPlayer(2);
+        player1 = game.getPlayer(1);
+        player2 = game.getPlayer(2);
     } else if (choice == 2) {
-        player1 = Game::getPlayer(1);
+        player1 = game.getPlayer(1);
         player2 = new AIPlayer();
     } else if (choice == 2) {
     } else {
@@ -38,8 +40,10 @@ int main () {
     while (true) {
         std::cout << cur->getName() << "'s turn" << std::endl;
         Move move = inputReader.ReadMove();
-        while (!cur->makeMove(move)) {
-            std::cerr << "Invalid move, please try again" << std::endl;
+
+        if (!game.MakeMove(*cur, move)) {
+            std::cerr << "Invalid move, please try again." << std::endl;
+            continue;
         }
         ChessBoard::getBoard()->display(std::cout);
 

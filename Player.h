@@ -14,7 +14,7 @@ class Player : public ChessPlayer {
         ~Player();
 
         bool makeMove(Move move) override;
-        bool inCheck() override;
+        bool inCheck(Game &game) override;
 
         void capture(Piece *piece) override;
 

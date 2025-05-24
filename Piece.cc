@@ -8,51 +8,41 @@ Piece::Piece(bool isWhite) : isWhite{isWhite}, square{nullptr} {}
 
 Piece::~Piece() {}
 
-bool Piece::move(Player &byPlayer, Square & dest) {
-    bool valid = false;
-    Piece *capture = nullptr;
-    Square *origin = square;
 
-    if (isWhite == byPlayer.isPlayerWhite()) {
-        if (canMoveTo(dest)) {
-            if (dest.occupied()) {
-                capture = dest.occupiedBy();
-
-                if (capture->isPieceWhite() != byPlayer.isPlayerWhite()) {
-                    valid = true;
-                }
-            } else {
-                valid = true;
-            }
-
-            if (valid) {
-                if (capture) {
-                    capture->setLocation(nullptr);
-                }
-                square->setPiece(nullptr);
-                square = &dest;
-                square->setPiece(this);
-
-                if (byPlayer.inCheck()) {
-                    valid = false;
-
-                    square = origin;
-                    square->setPiece(this);
-                    dest.setPiece(capture);
-
-                    if (capture) {
-                        capture->setLocation(&dest);
-                    }
-                } else {
-                    if (capture) {
-                        byPlayer.capture(capture);
-                    }
-                }  
-            }
-        }
+bool Piece::move(ChessPlayer& byPlayer, Square& dest) {
+    if (!square) {
+      std::cerr << "Error: Piece is not on a square." << std::endl;
+      return false;
     }
-    
-    return valid;
+  
+    // Handle capture
+    Piece* capture = nullptr;
+    if (dest.occupied()) {
+      capture = dest.occupiedBy();
+      capture->setLocation(nullptr);
+    }
+  
+    // Perform the move
+    square->setPiece(nullptr);
+    square = &dest;
+    square->setPiece(this);
+  
+    // Notify the player of the capture
+    if (capture) {
+      byPlayer.capture(capture);
+    }
+  
+    return true;
+  }
+
+void Piece::revertMove(Square *origin, Square &dest, Piece *capture) {
+    square = origin;
+    square->setPiece(this);
+    dest.setPiece(capture);
+
+    if (capture) {
+        capture->setLocation(&dest);
+    }
 }
 
 void Piece::setLocation(Square *location) {

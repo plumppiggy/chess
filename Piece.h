@@ -5,14 +5,14 @@
 #include "Square.h"
 #include "ChessBoard.h"
 
-class Player;
+class ChessPlayer;
 
 class Piece {
     public:
         Piece(bool isWhite);
         virtual ~Piece();
     
-        virtual bool move(Player &byPlayer, Square & dest);
+        virtual bool move(ChessPlayer &byPlayer, Square & dest);
         virtual void setLocation(Square * location);
     
         bool isPieceWhite() const;
@@ -22,6 +22,7 @@ class Piece {
         bool isOnSquare();
     
         Square* location();
+        void revertMove(Square *origin, Square &dest, Piece *capture = nullptr);
 
         virtual void display() = 0;
 

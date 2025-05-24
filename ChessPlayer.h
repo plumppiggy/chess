@@ -7,10 +7,12 @@
 #include "King.h"
 #include "Move.h"
 
+class Game;
+
 class ChessPlayer {
   public: 
         virtual bool makeMove(Move move) = 0;
-        virtual bool inCheck() = 0;
+        virtual bool inCheck(Game& game) = 0;
 
         virtual void capture(Piece *piece) = 0;
 
