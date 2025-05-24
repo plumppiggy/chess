@@ -14,5 +14,9 @@ class Queen : public Piece {
 
         void display();
 
+        double getValue() const override {
+            return 9.0;
+        }
+
 };
 #endif

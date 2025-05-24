@@ -6,8 +6,8 @@
 
 using namespace std;
 
-Player::Player(string name, bool isWhite, set<Piece *> & myPieces, King &king) : 
-        name{name}, isWhite{isWhite}, pieces{myPieces}, king{king} {}
+Player::Player(string name, bool isWhite) : 
+        name{name}, isWhite{isWhite} {}
 
 Player::~Player() {}
 
@@ -21,7 +21,7 @@ bool Player::inCheck(Game& game) {
     std::cout << "DEBUG: Checking if player " << getName() << " is in check." << std::endl;
 
     // Get the location of the player's king
-    Square* kingSquare = king.location();
+    Square* kingSquare = king->location();
     if (!kingSquare) {
         std::cerr << "ERROR: King's location is not set for player " << getName() << "." << std::endl;
         return false;
@@ -85,7 +85,7 @@ set<Piece*> * Player::myPieces() {
     return &pieces;
 }
 
-King * Player::myKing() {
-    return &king;
+King* Player::myKing() {
+    return king;
 }
 

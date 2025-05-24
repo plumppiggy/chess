@@ -14,6 +14,10 @@ class Pawn : public Piece {
         void display();
 
         bool hasMoved();
+
+        double getValue() const override {
+            return 1.0;
+        }
     private:
         bool moved;
 };

@@ -10,7 +10,7 @@
 
 class Player : public ChessPlayer {
     public:
-        Player(std::string name, bool isWhite, std::set<Piece*>& pieces, King & king);
+        Player(std::string name, bool isWhite);
         ~Player();
 
         bool makeMove(Move move) override;
@@ -24,12 +24,20 @@ class Player : public ChessPlayer {
         std::set<Piece*> * myPieces() override;
         King * myKing() override;
 
+        void SetPieces(std::set<Piece*> &pieces) override {
+            this->pieces = pieces;
+        }
+
+        void SetKing(King* king) override {
+            this->king = king;
+        }
+
 
     private:
         std::string name;
         bool isWhite;
-        std::set<Piece*>& pieces;
-        King & king;
+        std::set<Piece*> pieces;
+        King* king;
 
 };
 

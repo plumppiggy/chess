@@ -6,17 +6,20 @@
 #include "Piece.h"
 #include <set>
 #include <iostream>
+#include <vector>
 
 class Game {
     public:
         Game();
         ~Game();
-        void initialize();
+        void initialize(ChessPlayer* player1, ChessPlayer* player2);
 
         Player* getPlayer(int player_id);
 
         Player* opponent(Player & player);
         bool MakeMove(ChessPlayer& player, Move move);
+
+        std::vector<Move> generateMoves(Player& player);
 
 
     private:

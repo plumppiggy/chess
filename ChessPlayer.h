@@ -23,4 +23,10 @@ class ChessPlayer {
         virtual King * myKing() = 0;
 
         virtual Move getMove() {}
+        virtual Move getMove(Game &game) {
+            return Move();
+        }
+
+        virtual void SetPieces(std::set<Piece*> &pieces) = 0;
+        virtual void SetKing(King* king) = 0;
 };

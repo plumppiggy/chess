@@ -14,5 +14,9 @@ class Bishop : public Piece {
 
         void display();
 
+        double getValue() const override {
+            return 3.0;
+        }
+
 };
 #endif

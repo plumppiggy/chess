@@ -9,6 +9,10 @@ class King : public Piece{
         ~King();
         bool canMoveTo(Square & location);
         void display();
+
+        double getValue() const override {
+            return 1000.0;
+        }
 };
 
 #endif

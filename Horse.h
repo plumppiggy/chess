@@ -11,6 +11,10 @@ class Horse : public Piece {
         bool canMoveTo(Square & dest);
         void display();
 
+        double getValue() const override {
+            return 3.0;
+        }
+
 };
 
 #endif

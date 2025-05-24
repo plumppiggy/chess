@@ -12,10 +12,7 @@
 int main () {
     ChessPlayer* player1;
     ChessPlayer* player2;
-
     Game game;
-    game.initialize();
-
 
     std::cout << "Choose a game mode: " << std::endl;
     std::cout << "1. Player vs Player" << std::endl;
@@ -23,16 +20,16 @@ int main () {
     int choice;
     std::cin >> choice;
     if (choice == 1) {
-        player1 = game.getPlayer(1);
-        player2 = game.getPlayer(2);
+        player1 = new Player("White", true);
+        player2 = new Player("Black", false);
     } else if (choice == 2) {
-        player1 = game.getPlayer(1);
+        player1 = new Player("White", true);
         player2 = new AIPlayer();
-    } else if (choice == 2) {
     } else {
         std::cerr << "Invalid choice" << std::endl;
         return 1;
     }
+    game.initialize(player1, player2);
     ChessBoard::getBoard()->display(std::cout);
 
     ChessPlayer* cur = player1;
@@ -41,7 +38,7 @@ int main () {
         std::cout << cur->getName() << "'s turn" << std::endl;
         Move move;
         if (cur->getName() == "AI Player") {
-            move = cur->getMove();
+            move = cur->getMove(game);
             std::cout << "AI chose move: (" << move.from_x << ", " << move.from_y << ") to (" 
                       << move.to_x << ", " << move.to_y << ")" << std::endl;
         } else {

@@ -26,6 +26,8 @@ class Piece {
 
         virtual void display() = 0;
 
+        virtual double getValue() const = 0;
+
     protected:
         bool isWhite;
     

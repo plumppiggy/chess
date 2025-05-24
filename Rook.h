@@ -13,6 +13,9 @@ class Rook : public Piece {
         bool canMoveTo(Square &location);
 
         void display();
+        double getValue() const override {
+            return 5.0;
+        }
 
 };
 

@@ -27,7 +27,7 @@ Game::~Game() {
     delete &player2;
 }
 
-void Game::initialize() {
+void Game::initialize(ChessPlayer* player1, ChessPlayer* player2) {
     Piece *aPiece;
     King * aKing;
     Square *aSquare;
@@ -136,15 +136,17 @@ void Game::initialize() {
     aKing->setLocation(aSquare);
     whiteP.insert(aKing);
 
-    player1 = new Player("White", true, whiteP, *aKing);
-
+    player1->SetPieces(whiteP);
+    player1->SetKing(aKing);
+    
     aKing = new King(false);
     aSquare = ChessBoard::getBoard()->squareAt(4,7);
     aSquare->setPiece(aKing);
     aKing->setLocation(aSquare);
     blackP.insert(aKing);
+    player2->SetPieces(blackP);
+    player2->SetKing(aKing);
 
-    player2 = new Player("Black", false ,blackP, *aKing);
 }
 
 Player* Game::getPlayer(int player_id) {
@@ -230,4 +232,22 @@ bool Game::MakeMove(ChessPlayer& player, Move move) {
     std::cout << "DEBUG: Move completed successfully without putting the king in check." << std::endl;
 
     return true;
+}
+
+
+std::vector<Move> Game::generateMoves(Player& player) {
+    std::vector<Move> moves;
+    for (Piece* piece : *player.myPieces()) {
+        if (!piece || !piece->location()) continue; // Skip null pieces or pieces not on a square
+        Square* origin = piece->location();
+        for (int x = 0; x < 8; ++x) {
+            for (int y = 0; y < 8; ++y) {
+                Square* dest = ChessBoard::getBoard()->squareAt(x, y);
+                if (piece->canMoveTo(*dest)) {
+                    moves.push_back({origin->getX(), origin->getY(), dest->getX(), dest->getY()});
+                }
+            }
+        }
+    }
+    return moves;
 }
