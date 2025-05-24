@@ -15,6 +15,7 @@ class AIPlayer : public ChessPlayer {
     bool isPlayerWhite() override;
     std::set<Piece*>* myPieces() override;
     King* myKing() override;
+    Move getMove() override;
 
 private:
     std::string name;

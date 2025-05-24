@@ -36,3 +36,9 @@ std::set<Piece*>* AIPlayer::myPieces() {
 King* AIPlayer::myKing() {
     return king;
 }
+
+Move AIPlayer::getMove() {
+    // AI logic to determine the best move
+    // For now, return a dummy move
+    return Move{0, 0, 1, 1};
+}

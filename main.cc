@@ -39,7 +39,15 @@ int main () {
     InputReader inputReader;
     while (true) {
         std::cout << cur->getName() << "'s turn" << std::endl;
-        Move move = inputReader.ReadMove();
+        Move move;
+        if (cur->getName() == "AI Player") {
+            move = cur->getMove();
+            std::cout << "AI chose move: (" << move.from_x << ", " << move.from_y << ") to (" 
+                      << move.to_x << ", " << move.to_y << ")" << std::endl;
+        } else {
+            move = inputReader.ReadMove();
+
+        }
 
         if (!game.MakeMove(*cur, move)) {
             std::cerr << "Invalid move, please try again." << std::endl;

@@ -78,7 +78,7 @@ bool ChessBoard::clearDiagPath(Square & origin, Square &dest) {
     int deltaY = abs(origin.getY() - dest.getY());
 
     if (deltaX != deltaY) {
-        return false; // Not a diagonal move
+        return false;
     }
 
     int stepX = (dest.getX() > origin.getX()) ? 1 : -1;
@@ -89,7 +89,7 @@ bool ChessBoard::clearDiagPath(Square & origin, Square &dest) {
 
     while (x != dest.getX() && y != dest.getY()) {
         if (squareAt(x, y)->occupied()) {
-            return false; // Path is blocked
+            return false;
         }
         x += stepX;
         y += stepY;
