@@ -10,13 +10,17 @@ class Pawn : public Piece {
         Pawn(bool isWhite);
         ~Pawn();
         void setLocation(Square *location);
-        bool canMoveTo(Square &dest);
+        bool canMoveTo(ChessBoard &board, Square &dest);
         void display();
 
         bool hasMoved();
 
         double getValue() const override {
             return 1.0;
+        }
+
+        Piece* clone() const override {
+            return new Pawn(*this);
         }
     private:
         bool moved;

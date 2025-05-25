@@ -8,12 +8,11 @@ class AIPlayer : public ChessPlayer {
     AIPlayer(std::string name, bool isWhite, std::set<Piece*>& pieces, King& king);
     AIPlayer();
 
-    bool makeMove(Move move) override;
     bool inCheck(Game &game) override;
     void capture(Piece* piece) override;
     std::string getName() override;
     bool isPlayerWhite() override;
-    std::set<Piece*>* myPieces() override;
+    std::set<Piece*> myPieces() override;
     King* myKing() override;
     Move getMove(Game &game) override;
 
@@ -23,6 +22,17 @@ class AIPlayer : public ChessPlayer {
 
     void SetKing(King* king) override {
         this->king = king;
+    }
+
+    ChessPlayer* Clone() const override {
+        std::set<Piece*> newPieces;
+    for (Piece* piece : pieces) {
+        newPieces.insert(piece->clone()); // Assuming each Piece has a clone() method
+    }
+
+    King* newKing = static_cast<King*>(king->clone()); // Assuming King has a clone() method
+
+    return new AIPlayer(name, isWhite, newPieces, *newKing);
     }
 
 private:

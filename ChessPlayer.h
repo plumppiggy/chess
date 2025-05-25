@@ -11,7 +11,6 @@ class Game;
 
 class ChessPlayer {
   public: 
-        virtual bool makeMove(Move move) = 0;
         virtual bool inCheck(Game& game) = 0;
 
         virtual void capture(Piece *piece) = 0;
@@ -19,7 +18,7 @@ class ChessPlayer {
         virtual std::string getName() = 0;
         virtual bool isPlayerWhite() = 0;
 
-        virtual std::set<Piece*> * myPieces() = 0;
+        virtual std::set<Piece*> myPieces() = 0;
         virtual King * myKing() = 0;
 
         virtual Move getMove() {}
@@ -29,4 +28,6 @@ class ChessPlayer {
 
         virtual void SetPieces(std::set<Piece*> &pieces) = 0;
         virtual void SetKing(King* king) = 0;
+        virtual ChessPlayer* Clone() const = 0;
+
 };

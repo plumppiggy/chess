@@ -10,11 +10,15 @@ class Rook : public Piece {
 
         ~Rook();
 
-        bool canMoveTo(Square &location);
+        bool canMoveTo(ChessBoard &board, Square &location);
 
         void display();
         double getValue() const override {
             return 5.0;
+        }
+
+        Piece* clone() const override {
+            return new Rook(*this);
         }
 
 };

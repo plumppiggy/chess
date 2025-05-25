@@ -13,7 +13,6 @@ class Player : public ChessPlayer {
         Player(std::string name, bool isWhite);
         ~Player();
 
-        bool makeMove(Move move) override;
         bool inCheck(Game &game) override;
 
         void capture(Piece *piece) override;
@@ -21,7 +20,7 @@ class Player : public ChessPlayer {
         std::string getName() override;
         bool isPlayerWhite() override;
 
-        std::set<Piece*> * myPieces() override;
+        std::set<Piece*> myPieces() override;
         King * myKing() override;
 
         void SetPieces(std::set<Piece*> &pieces) override {
@@ -30,6 +29,10 @@ class Player : public ChessPlayer {
 
         void SetKing(King* king) override {
             this->king = king;
+        }
+
+        ChessPlayer* Clone() const override {
+            return new Player(*this);
         }
 
 

@@ -10,12 +10,16 @@ class Bishop : public Piece {
 
         ~Bishop();
 
-        bool canMoveTo(Square &location);
+        bool canMoveTo(ChessBoard &board, Square &location);
 
         void display();
 
         double getValue() const override {
             return 3.0;
+        }
+
+        Piece* clone() const override {
+            return new Bishop(*this);
         }
 
 };

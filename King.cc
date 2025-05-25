@@ -6,7 +6,10 @@ King::King(bool isWhite) : Piece(isWhite) {}
 
 King::~King() {}
 
-bool King::canMoveTo(Square & dest) {
+bool King::canMoveTo(ChessBoard &board, Square & dest) {
+    if (dest == *(location())) {
+        return false;
+    }
     int x = dest.getX();
     int y = dest.getY();
 

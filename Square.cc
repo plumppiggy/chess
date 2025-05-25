@@ -20,10 +20,10 @@ int Square::getY() {
 }
 
 bool Square::occupied() {
-    return piece;
+    return piece != nullptr;
 }
 
-Piece * Square::occupiedBy() {
+Piece* Square::occupiedBy() {
     return piece;
 }
 

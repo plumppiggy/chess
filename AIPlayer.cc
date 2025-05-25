@@ -7,23 +7,20 @@
 AIPlayer::AIPlayer(std::string name, bool isWhite, std::set<Piece*>& pieces, King& king)
     : name(name), isWhite(isWhite), pieces(pieces), king(&king) {}
 AIPlayer::AIPlayer() 
-    : name("Black"), isWhite(false), king(nullptr) {
-}
-bool AIPlayer::makeMove(Move move) {
-    return true;
+    : name("AI Player"), isWhite(false), king(nullptr) {
 }
 
 bool AIPlayer::inCheck(Game &game) {
     std::cout << name << " is checking if it's in check..." << std::endl;
-    return false;
+    return game.inCheck(*this);
 }
 
 void AIPlayer::capture(Piece* piece) {
-    std::cout << name << " captured a piece!" << std::endl;
     pieces.erase(piece);
 }
 
 std::string AIPlayer::getName() {
+    std::cout << "DEBUG: AIPlayer name is: " << name << std::endl;
     return name;
 }
 
@@ -31,62 +28,97 @@ bool AIPlayer::isPlayerWhite() {
     return isWhite;
 }
 
-std::set<Piece*>* AIPlayer::myPieces() {
-    return &pieces;
+std::set<Piece*> AIPlayer::myPieces() {
+    return pieces;
 }
 
 King* AIPlayer::myKing() {
     return king;
 }
 
-double AIPlayer::mini_max(int depth, Game &game, double alpha, double beta, bool isMaximisingPlayer) {
+double AIPlayer::mini_max(int depth, Game& game, double alpha, double beta, bool isMaximisingPlayer) {
+    std::cout << "DEBUG: Entering mini_max. Depth: " << depth
+              << ", Alpha: " << alpha << ", Beta: " << beta
+              << ", Maximising: " << (isMaximisingPlayer ? "true" : "false") << std::endl;
+
     if (depth == 0) {
-        return -evaluate_board(game);
+        double eval = -evaluate_board(game);
+        std::cout << "DEBUG: Reached leaf node. Evaluation: " << eval << std::endl;
+        return eval;
     }
 
     if (isMaximisingPlayer) {
-        double maxEval = -1e9; 
+        double maxEval = -1e9;
         auto moves = game.generateMoves(*game.getPlayer(2));
-        
+        std::cout << "DEBUG: Maximising player. Number of moves: " << moves.size() << std::endl;
+
         for (const auto& move : moves) {
+            std::cout << "DEBUG: Evaluating move from (" << move.from_x << ", " << move.from_y
+                      << ") to (" << move.to_x << ", " << move.to_y << ")." << std::endl;
+
             Game newGame = game;
-            if (newGame.MakeMove(*game.getPlayer(1), move)) {
+            if (newGame.MakeMove(*game.getPlayer(2), move)) {
+                std::cout << "DEBUG: Move successful. Simulating next depth." << std::endl;
                 double eval = mini_max(depth - 1, newGame, alpha, beta, false);
+                std::cout << "DEBUG: Evaluation returned: " << eval << std::endl;
+
                 maxEval = std::max(maxEval, eval);
                 alpha = std::max(alpha, eval);
+                std::cout << "DEBUG: Updated maxEval: " << maxEval << ", Alpha: " << alpha << std::endl;
+
                 if (beta <= alpha) {
-                    break; // Beta cut-off
+                    std::cout << "DEBUG: Beta cut-off. Beta: " << beta << ", Alpha: " << alpha << std::endl;
+                    break;
                 }
+            } else {
+                std::cerr << "DEBUG: Move failed. Skipping move." << std::endl;
             }
+            std::cout << "DEBUG: Current maxEval: " << maxEval << std::endl;
         }
+        std::cout << "DEBUG: Returning maxEval: " << maxEval << std::endl;
         return maxEval;
     } else {
         double minEval = 1e9;
-        auto moves = game.generateMoves(*game.getPlayer(2));
+        auto moves = game.generateMoves(*game.getPlayer(1));
+        std::cout << "DEBUG: Minimising player. Number of moves: " << moves.size() << std::endl;
+
         for (const auto& move : moves) {
+            std::cout << "DEBUG: Evaluating move from (" << move.from_x << ", " << move.from_y
+                      << ") to (" << move.to_x << ", " << move.to_y << ")." << std::endl;
+
             Game newGame = game;
-            if (newGame.MakeMove(*game.getPlayer(2), move)) {
+            if (newGame.MakeMove(*game.getPlayer(1), move)) {
+                std::cout << "DEBUG: Move successful. Simulating next depth." << std::endl;
                 double eval = mini_max(depth - 1, newGame, alpha, beta, true);
+                std::cout << "DEBUG: Evaluation returned: " << eval << std::endl;
+
                 minEval = std::min(minEval, eval);
                 beta = std::min(beta, eval);
+                std::cout << "DEBUG: Updated minEval: " << minEval << ", Beta: " << beta << std::endl;
+
                 if (beta <= alpha) {
+                    std::cout << "DEBUG: Alpha cut-off. Beta: " << beta << ", Alpha: " << alpha << std::endl;
                     break;
                 }
+            } else {
+                std::cerr << "DEBUG: Move failed. Skipping move." << std::endl;
             }
         }
+        std::cout << "DEBUG: Returning minEval: " << minEval << std::endl;
         return minEval;
-}
+    }
 }
 
 double AIPlayer::evaluate_board(Game& game) {
+    std::cout << "DEBUG: Evaluating board for AI player: " << getName() << std::endl;
     double score = 0.0;
 
-    for (Piece* piece : *game.getPlayer(2)->myPieces()) {
+    for (Piece* piece : game.getPlayer(2)->myPieces()) {
         if (!piece || !piece->location()) continue;
         score += piece->getValue();
     }
 
-    for (Piece* piece : *game.getPlayer(1)->myPieces()) {
+    for (Piece* piece : game.getPlayer(1)->myPieces()) {
         if (!piece || !piece->location()) continue;
         score -= piece->getValue(); 
     }
@@ -121,13 +153,22 @@ Move AIPlayer::getMove(Game& game) {
         // Iterate through all possible destination squares
         for (int x = 0; x < 8; ++x) {
             for (int y = 0; y < 8; ++y) {
-                Square* dest = ChessBoard::getBoard()->squareAt(x, y);
+                Square* dest = game.getBoard().squareAt(x, y);
+
+
                 if (!dest) {
                     std::cerr << "DEBUG: Destination square (" << x << ", " << y << ") is invalid. Skipping." << std::endl;
                     continue;
                 }
 
-                if (piece->canMoveTo(*dest)) {
+                if (!piece) {
+                    std::cerr << "DEBUG: Piece is null. Skipping." << std::endl;
+                    continue;
+                }
+
+                std::cout << piece->getValue() << std::endl;
+
+                if (piece->canMoveTo(game.getBoard(), *dest)) {
                     std::cout << "DEBUG: Piece can move to (" << x << ", " << y << ")." << std::endl;
 
                     Game newGame = game;  // Create a copy of the game
@@ -137,13 +178,18 @@ Move AIPlayer::getMove(Game& game) {
                         std::cout << "DEBUG: Simulating move from (" << move.from_x << ", " << move.from_y
                                   << ") to (" << move.to_x << ", " << move.to_y << ")." << std::endl;
 
-                        double eval = mini_max(3, newGame, -1e9, 1e9, false);  // Depth = 3
+                        double eval = mini_max(2, newGame, -1e9, 1e9, false);  // Depth = 1
                         std::cout << "DEBUG: Evaluation for move: " << eval << std::endl;
 
                         if (eval > bestEval) {
                             std::cout << "DEBUG: Found a better move with evaluation: " << eval << std::endl;
                             bestEval = eval;
                             bestMove = move;
+                        }
+                        else {
+                            std::cout << "DEBUG: Move from (" << move.from_x << ", " << move.from_y
+                                      << ") to (" << move.to_x << ", " << move.to_y
+                                      << ") did not improve evaluation. Current best: " << bestEval << std::endl;
                         }
                     } else {
                         std::cerr << "DEBUG: Move from (" << move.from_x << ", " << move.from_y

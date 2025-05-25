@@ -30,7 +30,7 @@ int main () {
         return 1;
     }
     game.initialize(player1, player2);
-    ChessBoard::getBoard()->display(std::cout);
+    game.getBoard().display(std::cout);
 
     ChessPlayer* cur = player1;
     InputReader inputReader;
@@ -50,7 +50,8 @@ int main () {
             std::cerr << "Invalid move, please try again." << std::endl;
             continue;
         }
-        ChessBoard::getBoard()->display(std::cout);
+        
+        game.getBoard().display(std::cout);
 
         cur = (cur == player1) ? player2 : player1;
     }

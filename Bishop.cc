@@ -8,9 +8,12 @@ Bishop::Bishop(bool isWhite) : Piece(isWhite) {}
 
 Bishop::~Bishop() {}
 
-bool Bishop::canMoveTo(Square &newLocation) {
+bool Bishop::canMoveTo(ChessBoard& board, Square &dest) {
+    if (dest == *(location())) {
+        return false;
+    }
     bool validMove = false;
-    if (ChessBoard::getBoard()->clearDiagPath(*(location()), newLocation)) {
+    if (board.clearDiagPath(*(location()), dest)) {
         validMove = true;
     }
     return validMove;

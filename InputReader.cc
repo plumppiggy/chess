@@ -1,5 +1,4 @@
 #include "InputReader.h"
-#include "ChessBoard.h"
 #include <iostream>
 #include <limits>
 
@@ -38,8 +37,7 @@ return from.length() == 2 && to.length() == 2 &&
          from.at(0) >= 'a' && from.at(0) <= 'h' &&
          to.at(0) >= 'a' && to.at(0) <= 'h' &&
          from.at(1) >= '1' && from.at(1) <= '8' &&
-         to.at(1) >= '1' && to.at(1) <= '8' &&
-         ChessBoard::getBoard()->squareAt(from.at(0) - 'a', from.at(1) - '1')->occupied();
+         to.at(1) >= '1' && to.at(1) <= '8';
 
 } 
 

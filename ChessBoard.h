@@ -7,7 +7,6 @@
 
 class ChessBoard {
     private:
-        static ChessBoard * board; // current board
         
         bool whiteTurn = true;
         bool inCheck = false;
@@ -21,10 +20,9 @@ class ChessBoard {
 
 
     public:
-        static ChessBoard * getBoard();
-
         ChessBoard();
         ~ChessBoard();
+        ChessBoard(const ChessBoard& other);
 
         Square * squareAt(int x, int y);
 

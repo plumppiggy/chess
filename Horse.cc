@@ -6,7 +6,10 @@ Horse::Horse(bool isWhite) : Piece{isWhite} {}
 
 Horse::~Horse() {}
 
-bool Horse::canMoveTo(Square &dest) {
+bool Horse::canMoveTo(ChessBoard &board, Square &dest) {
+    if (dest == *(location())) {
+        return false;
+    }
     int x = location()->getX() - dest.getX();
     int y = location()->getY() - dest.getY();
 

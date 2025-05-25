@@ -2,6 +2,7 @@
 #define PIECE_H
 
 #include <iostream>
+#include <optional>
 #include "Square.h"
 #include "ChessBoard.h"
 
@@ -12,12 +13,12 @@ class Piece {
         Piece(bool isWhite);
         virtual ~Piece();
     
-        virtual bool move(ChessPlayer &byPlayer, Square & dest);
+        virtual std::optional<Piece*> move(ChessPlayer &byPlayer, Square & dest);
         virtual void setLocation(Square * location);
     
         bool isPieceWhite() const;
     
-        virtual bool canMoveTo(Square& location) = 0;
+        virtual bool canMoveTo(ChessBoard &board, Square& location) = 0;
     
         bool isOnSquare();
     
@@ -27,6 +28,7 @@ class Piece {
         virtual void display() = 0;
 
         virtual double getValue() const = 0;
+        virtual Piece* clone() const = 0;
 
     protected:
         bool isWhite;

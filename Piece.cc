@@ -2,6 +2,7 @@
 #include "Player.h"
 #include <string>
 #include <iostream>
+#include <optional>
 using namespace std;
 
 Piece::Piece(bool isWhite) : isWhite{isWhite}, square{nullptr} {}
@@ -9,10 +10,14 @@ Piece::Piece(bool isWhite) : isWhite{isWhite}, square{nullptr} {}
 Piece::~Piece() {}
 
 
-bool Piece::move(ChessPlayer& byPlayer, Square& dest) {
+std::optional<Piece*> Piece::move(ChessPlayer& byPlayer, Square& dest) {
     if (!square) {
       std::cerr << "Error: Piece is not on a square." << std::endl;
-      return false;
+      return nullopt;
+    }
+    if (*square == dest) {
+      std::cerr << "Error: Piece is already on the destination square." << std::endl;
+      return nullopt;
     }
   
     // Handle capture
@@ -29,10 +34,11 @@ bool Piece::move(ChessPlayer& byPlayer, Square& dest) {
   
     // Notify the player of the capture
     if (capture) {
-      byPlayer.capture(capture);
+      return capture;
+
     }
+    return nullopt;
   
-    return true;
   }
 
 void Piece::revertMove(Square *origin, Square &dest, Piece *capture) {
@@ -57,7 +63,7 @@ bool Piece::isOnSquare() {
     return square;
 }
 
-Square * Piece::location() {
+Square* Piece::location() {
     return square;
 }
 

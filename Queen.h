@@ -10,12 +10,16 @@ class Queen : public Piece {
 
         ~Queen();
 
-        bool canMoveTo(Square &location);
+        bool canMoveTo(ChessBoard &board, Square &location);
 
         void display();
 
         double getValue() const override {
             return 9.0;
+        }
+
+        Piece* clone() const override {
+            return new Queen(*this);
         }
 
 };

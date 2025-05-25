@@ -11,6 +11,14 @@ ChessBoard::ChessBoard() {
     }
 }
 
+ChessBoard::ChessBoard(const ChessBoard& other) {
+    for (int i = 0; i < DIMENSION; i++) {
+        for (int j = 0; j < DIMENSION; j++) {
+            squares[i][j] = new Square(i, j);
+        }
+    }
+}
+
 ChessBoard::~ChessBoard() {
     for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
@@ -19,14 +27,8 @@ ChessBoard::~ChessBoard() {
     }
 }
 
-ChessBoard * ChessBoard::getBoard() {
-    if (!board) {
-        board = new ChessBoard();
-    } 
-    return board;
-}
 
-Square * ChessBoard::squareAt(int x, int y) {
+Square* ChessBoard::squareAt(int x, int y) {
     return squares[x][y];
 }
 
@@ -117,5 +119,3 @@ void ChessBoard::display(ostream& out) {
     }
     out << "  a b c d e f g h " << endl;
 }
-
-ChessBoard * ChessBoard::board = nullptr;

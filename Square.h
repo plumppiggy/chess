@@ -18,6 +18,10 @@ class Square {
     
         Piece* occupiedBy();
 
+        bool operator==(const Square &other) const {
+            return (x == other.x && y == other.y);
+        }
+
     private:
         int x, y;
         Piece * piece;
