@@ -177,19 +177,14 @@ ChessPlayer* Game::getPlayer(int player_id) {
 ChessPlayer* Game::opponent(ChessPlayer& player) {
     ChessPlayer* opponent;
     if (player.getName() == player1->getName()) {
-        std::cout << "DEBUG: Player is player1, setting opponent to player2." << std::endl;
         opponent = player2;
     } else {
-        std::cout << "DEBUG: Player is player2, setting opponent to player1." << std::endl;
         opponent = player1;
     }
     return opponent;
 }
 
 bool Game::MakeMove(ChessPlayer& player, Move move) {
-    std::cout << "DEBUG: Starting MakeMove for player: " << player.getName() << std::endl;
-    std::cout << "DEBUG: Move from (" << move.from_x << ", " << move.from_y << ") to ("
-              << move.to_x << ", " << move.to_y << ")" << std::endl;
 
     // Get the origin and destination squares
     Square* origin = board.squareAt(move.from_x, move.from_y);
@@ -209,16 +204,12 @@ bool Game::MakeMove(ChessPlayer& player, Move move) {
         return false;
     }
 
-    std::cout << "DEBUG: Origin square and destination square retrieved successfully." << std::endl;
-
     // Get the piece at the origin square
     Piece* piece = origin->occupiedBy();
     if (!piece) {
         std::cerr << "ERROR: No piece at the origin square (" << move.from_x << ", " << move.from_y << ")." << std::endl;
         return false;
     }
-
-    std::cout << "DEBUG: Piece at origin square is " << (piece->isPieceWhite() ? "White" : "Black") << " piece." << std::endl;
 
     if (piece->isPieceWhite() != player.isPlayerWhite()) {
         std::cerr << "ERROR: Player " << player.getName() << " cannot move this piece." << std::endl;
@@ -230,18 +221,13 @@ bool Game::MakeMove(ChessPlayer& player, Move move) {
         return false;
     }
 
-    std::cout << "DEBUG: Piece can move to the destination square." << std::endl;
-
     // Perform the move
     std::optional<Piece*> capturedPiece = piece->move(player, *dest);
     if (capturedPiece.has_value()) {
-        std::cout << "DEBUG: Captured piece at destination square." << std::endl;
         opponent(player)->capture(capturedPiece.value());
     } else {
-        std::cout << "DEBUG: No piece captured during the move." << std::endl;
     }
 
-    std::cout << "DEBUG: Move executed successfully." << std::endl;
 
     // Check if the move puts the player's king in check
     if (player.inCheck(*this)) {
@@ -249,8 +235,6 @@ bool Game::MakeMove(ChessPlayer& player, Move move) {
         piece->move(player, *origin);
         return false;
     }
-
-    std::cout << "DEBUG: Move completed successfully without putting the king in check." << std::endl;
 
     return true;
 }
@@ -299,8 +283,6 @@ std::vector<Move> Game::generateMoves(ChessPlayer& player) {
                                   << ") claims it can move to its own square (" << dest->getX() << ", " << dest->getY()
                                   << "). This is incorrect!" << std::endl;
                     } else {
-                        std::cout << "DEBUG: Piece at (" << origin->getX() << ", " << origin->getY()
-                                  << ") can move to (" << dest->getX() << ", " << dest->getY() << ")." << std::endl;
                         moves.push_back({origin->getX(), origin->getY(), dest->getX(), dest->getY()});
                     }
                 }
