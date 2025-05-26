@@ -20,12 +20,20 @@ Game::Game(const Game& other) : board(other.board) {
     this->player2 = other.player2->Clone();
 
     for (Piece* piece : player1->myPieces()) {
+        if (piece->location() == nullptr) {
+            std::cerr << "ERROR: Piece has no location in the cloned game." << std::endl;
+            continue;
+        }
         Square* newSquare = board.squareAt(piece->location()->getX(), piece->location()->getY());
         newSquare->setPiece(piece);
         piece->setLocation(newSquare);
     }
 
     for (Piece* piece : player2->myPieces()) {
+        if (piece->location() == nullptr) {
+            std::cerr << "ERROR: Piece has no location in the cloned game." << std::endl;
+            continue;
+        }
         Square* newSquare = board.squareAt(piece->location()->getX(), piece->location()->getY());
         newSquare->setPiece(piece);
         piece->setLocation(newSquare);
@@ -139,18 +147,17 @@ void Game::initialize(ChessPlayer* player1, ChessPlayer* player2) {
     aSquare = board.squareAt(4, 0);
     aSquare->setPiece(aKing);
     aKing->setLocation(aSquare);
-    whiteP.insert(aKing);
-
-    player1->SetPieces(whiteP);
     player1->SetKing(aKing);
+    whiteP.insert(aKing);
+    player1->SetPieces(whiteP);
     
     aKing = new King(false);
     aSquare = board.squareAt(4,7);
     aSquare->setPiece(aKing);
+    player2->SetKing(aKing);
     aKing->setLocation(aSquare);
     blackP.insert(aKing);
     player2->SetPieces(blackP);
-    player2->SetKing(aKing);
 
     this->player1 = player1;
     this->player2 = player2;
@@ -213,15 +220,11 @@ bool Game::MakeMove(ChessPlayer& player, Move move) {
 
     std::cout << "DEBUG: Piece at origin square is " << (piece->isPieceWhite() ? "White" : "Black") << " piece." << std::endl;
 
-    // Check if the piece belongs to the current player
     if (piece->isPieceWhite() != player.isPlayerWhite()) {
         std::cerr << "ERROR: Player " << player.getName() << " cannot move this piece." << std::endl;
         return false;
     }
 
-    std::cout << "DEBUG: Piece belongs to the current player." << std::endl;
-
-    // Check if the piece can move to the destination square
     if (!piece->canMoveTo(board, *dest)) {
         std::cerr << "ERROR: Piece cannot move to the destination square (" << move.to_x << ", " << move.to_y << ")." << std::endl;
         return false;
@@ -253,23 +256,16 @@ bool Game::MakeMove(ChessPlayer& player, Move move) {
 }
 
 bool Game::inCheck(ChessPlayer& player) {
-    std::cout << "DEBUG: Checking if player " << player.getName() << " is in check." << std::endl;
-
     Square* kingSquare = player.myKing()->location();
     if (!kingSquare) {
         std::cerr << "ERROR: King's location is not set for player " << player.getName() << "." << std::endl;
         return false;
     }
 
-    std::cout << "DEBUG: King's location is at (" << kingSquare->getX() << ", " << kingSquare->getY() << ")." << std::endl;
-
     auto opponentPieces = opponent(player)->myPieces();
     if (opponentPieces.empty()) {
-        std::cout << "DEBUG: Opponent has no pieces. Player " << player.getName() << " cannot be in check." << std::endl;
         return false;
     }
-
-    std::cout << "DEBUG: Opponent has " << opponentPieces.size() << " pieces." << std::endl;
 
     for (Piece* opponentPiece : opponentPieces) {
         if (!opponentPiece) {
@@ -278,20 +274,13 @@ bool Game::inCheck(ChessPlayer& player) {
         }
         Square* opponentLocation = opponentPiece->location();
         if (!opponentLocation) {
-            std::cerr << "DEBUG: Opponent piece has no location. Skipping this piece." << std::endl;
             continue;
         }
-        std::cout << "DEBUG: Checking opponent piece at (" << opponentLocation->getX() << ", " << opponentLocation->getY() << ")." << std::endl;
         if (opponentPiece->canMoveTo(getBoard(), *kingSquare)) {
-            std::cout << "DEBUG: Opponent piece at (" << opponentLocation->getX() << ", " << opponentLocation->getY()
-                      << ") can move to the king's square (" << kingSquare->getX() << ", " << kingSquare->getY() << ")." << std::endl;
-            std::cout << "Player " << player.getName() << " is in check by "
-                      << (opponentPiece->isPieceWhite() ? "white" : "black") << " piece." << std::endl;
             return true;
         }
     }
 
-    std::cout << "DEBUG: No opponent pieces can move to the king's square. Player " << player.getName() << " is not in check." << std::endl;
     return false;
 }
 

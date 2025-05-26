@@ -11,6 +11,7 @@ class ChessPlayer;
 class Piece {
     public:
         Piece(bool isWhite);
+        Piece(const Piece& other) : isWhite(other.isWhite), square(other.square) {}
         virtual ~Piece();
     
         virtual std::optional<Piece*> move(ChessPlayer &byPlayer, Square & dest);
@@ -34,7 +35,7 @@ class Piece {
         bool isWhite;
     
     private:
-        Square * square;
+        Square* square;
 };
 
 #endif

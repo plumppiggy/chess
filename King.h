@@ -6,8 +6,9 @@
 class King : public Piece{
     public:
         King(bool isWhite);
+        King(const King& other) : Piece(other) {}
         ~King();
-        bool canMoveTo(ChessBoard &board, Square & location);
+        bool canMoveTo(ChessBoard &board, Square & location) override;
         void display();
 
         double getValue() const override {

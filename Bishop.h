@@ -7,10 +7,11 @@
 class Bishop : public Piece {
     public:
         Bishop(bool isWhite);
+        Bishop(const Bishop& other) : Piece(other) {}
 
         ~Bishop();
 
-        bool canMoveTo(ChessBoard &board, Square &location);
+        bool canMoveTo(ChessBoard &board, Square &location) override;
 
         void display();
 

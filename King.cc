@@ -6,8 +6,13 @@ King::King(bool isWhite) : Piece(isWhite) {}
 
 King::~King() {}
 
-bool King::canMoveTo(ChessBoard &board, Square & dest) {
+bool King::canMoveTo(ChessBoard &board, Square& dest) {
     if (dest == *(location())) {
+        return false;
+    }
+
+    auto piece = dest.occupiedBy();
+    if (piece && piece->isPieceWhite() == isPieceWhite()) {
         return false;
     }
     int x = dest.getX();

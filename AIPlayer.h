@@ -27,10 +27,10 @@ class AIPlayer : public ChessPlayer {
     ChessPlayer* Clone() const override {
         std::set<Piece*> newPieces;
     for (Piece* piece : pieces) {
-        newPieces.insert(piece->clone()); // Assuming each Piece has a clone() method
+        newPieces.insert(piece->clone());
     }
 
-    King* newKing = static_cast<King*>(king->clone()); // Assuming King has a clone() method
+    King* newKing = static_cast<King*>(king->clone());
 
     return new AIPlayer(name, isWhite, newPieces, *newKing);
     }

@@ -7,10 +7,11 @@
 class Queen : public Piece {
     public:
         Queen(bool isWhite);
+        Queen(const Queen& other) : Piece(other) {}
 
         ~Queen();
 
-        bool canMoveTo(ChessBoard &board, Square &location);
+        bool canMoveTo(ChessBoard &board, Square &location) override;
 
         void display();
 

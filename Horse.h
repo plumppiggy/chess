@@ -7,8 +7,9 @@
 class Horse : public Piece {
     public: 
         Horse(bool isWhite);
+        Horse(const Horse& other) : Piece(other) {}
         ~Horse();
-        bool canMoveTo(ChessBoard &board, Square & dest);
+        bool canMoveTo(ChessBoard &board, Square & dest) override;
         void display();
 
         double getValue() const override {

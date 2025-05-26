@@ -8,9 +8,10 @@
 class Pawn : public Piece {
     public:
         Pawn(bool isWhite);
+        Pawn(const Pawn& other) : Piece(other), moved(other.moved) {}
         ~Pawn();
         void setLocation(Square *location);
-        bool canMoveTo(ChessBoard &board, Square &dest);
+        bool canMoveTo(ChessBoard &board, Square &dest) override;
         void display();
 
         bool hasMoved();

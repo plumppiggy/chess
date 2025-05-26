@@ -10,6 +10,10 @@ bool Horse::canMoveTo(ChessBoard &board, Square &dest) {
     if (dest == *(location())) {
         return false;
     }
+    auto piece = dest.occupiedBy();
+    if (piece && piece->isPieceWhite() == isPieceWhite()) {
+        return false;
+    }
     int x = location()->getX() - dest.getX();
     int y = location()->getY() - dest.getY();
 

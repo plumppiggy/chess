@@ -7,10 +7,12 @@
 class Rook : public Piece {
     public:
         Rook(bool isWhite);
+        Rook(const Rook& other) : Piece(other) {
+        }
 
         ~Rook();
 
-        bool canMoveTo(ChessBoard &board, Square &location);
+        bool canMoveTo(ChessBoard &board, Square &location) override;
 
         void display();
         double getValue() const override {

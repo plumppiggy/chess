@@ -31,9 +31,7 @@ class Player : public ChessPlayer {
             this->king = king;
         }
 
-        ChessPlayer* Clone() const override {
-            return new Player(*this);
-        }
+        ChessPlayer* Clone() const override;
 
 
     private:

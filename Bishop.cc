@@ -12,6 +12,10 @@ bool Bishop::canMoveTo(ChessBoard& board, Square &dest) {
     if (dest == *(location())) {
         return false;
     }
+    auto piece = dest.occupiedBy();
+    if (piece && piece->isPieceWhite() == isPieceWhite()) {
+        return false;
+    }
     bool validMove = false;
     if (board.clearDiagPath(*(location()), dest)) {
         validMove = true;

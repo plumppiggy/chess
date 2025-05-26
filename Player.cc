@@ -14,8 +14,6 @@ Player::~Player() {}
 
 bool Player::inCheck(Game& game) {
 
-    std::cout << "DEBUG: Checking if player " << getName() << " is in check." << std::endl;
-
     // Get the location of the player's king
     Square* kingSquare = king->location();
     if (!kingSquare) {
@@ -48,8 +46,6 @@ bool Player::inCheck(Game& game) {
             continue;
         }
 
-        std::cout << "DEBUG: Checking opponent piece at (" << opponentLocation->getX() << ", " << opponentLocation->getY() << ")." << std::endl;
-
         // Check if the opponent piece can move to the king's square
         if (opponentPiece->canMoveTo(game.getBoard(), *kingSquare)) {
             std::cout << "DEBUG: Opponent piece at (" << opponentLocation->getX() << ", " << opponentLocation->getY()
@@ -69,7 +65,6 @@ void Player::capture(Piece * p) {
 }
 
 string Player::getName() {
-    std::cout << "DEBUG: Player's name is " << name << "." << std::endl;
     return name;
 }
 
@@ -84,4 +79,19 @@ set<Piece*> Player::myPieces() {
 King* Player::myKing() {
     return king;
 }
+
+ ChessPlayer* Player::Clone() const {
+    std::set<Piece*> newPieces;
+    for (Piece* piece : pieces) {
+        newPieces.insert(piece->clone());
+    }
+
+    King* newKing = static_cast<King*>(king->clone());
+
+    auto player = new Player(name, isWhite);
+    player->SetPieces(newPieces);
+    player->SetKing(newKing);
+
+    return player;
+ }
 

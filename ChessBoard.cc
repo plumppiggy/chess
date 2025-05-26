@@ -22,7 +22,7 @@ ChessBoard::ChessBoard(const ChessBoard& other) {
 ChessBoard::~ChessBoard() {
     for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
-            delete [] squares[i][j];
+            delete squares[i][j];
         }
     }
 }

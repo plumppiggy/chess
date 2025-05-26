@@ -8,12 +8,18 @@ Pawn::Pawn(bool isWhite) : Piece{isWhite}, moved{false} {}
 Pawn::~Pawn() {}
 
 void Pawn::setLocation(Square* location) {
+    // TODO: doesnt handle if u revert the move - this needs 2 be fixed
     Piece::setLocation(location);
+    moved = true;
 }
 
 bool Pawn::canMoveTo(ChessBoard &board, Square& dest) {
     if (!location()) {
         std::cerr << "DEBUG: Pawn has no current location. Returning false." << std::endl;
+        return false;
+    }
+    auto piece = dest.occupiedBy();
+    if (piece && piece->isPieceWhite() == isPieceWhite()) {
         return false;
     }
 
