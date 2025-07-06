@@ -46,17 +46,11 @@ bool Player::inCheck(Game& game) {
             continue;
         }
 
-        // Check if the opponent piece can move to the king's square
         if (opponentPiece->canMoveTo(game.getBoard(), *kingSquare)) {
-            std::cout << "DEBUG: Opponent piece at (" << opponentLocation->getX() << ", " << opponentLocation->getY()
-                      << ") can move to the king's square (" << kingSquare->getX() << ", " << kingSquare->getY() << ")." << std::endl;
-            std::cout << "Player " << getName() << " is in check by "
-                      << (opponentPiece->isPieceWhite() ? "white" : "black") << " piece." << std::endl;
             return true;
         }
     }
 
-    std::cout << "DEBUG: No opponent pieces can move to the king's square. Player " << getName() << " is not in check." << std::endl;
     return false;
 }
 
